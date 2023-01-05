@@ -1,16 +1,18 @@
 import React from "react";
 import { PageHOC } from "../components";
+import { useGlobalContext } from "../context";
 
-const CreateBattle = () => {};
+const CreateBattle = () => {
+  const {} = useGlobalContext();
+
+  return <h1>{}</h1>;
+};
 
 export default PageHOC(
   CreateBattle,
   <>
-    Welcome to Avax Gods
-    <br />a Web3 NFT Card Game
+    Create
+    <br />a new Battle
   </>,
-  <>
-    Connect your wallet to start playing <br />
-    the ultimate web3 Battle Card Game
-  </>
+  <>Create your own battle and wait for other players to join you</>
 );

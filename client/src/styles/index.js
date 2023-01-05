@@ -60,7 +60,7 @@ const styles = {
   btn: "px-4 py-2 rounded-lg bg-siteViolet w-fit text-white font-rajdhani font-bold",
 
   // custom input component
-  label: "font-rajdhani font-semibold text-2xl text-white mb-3",
+  label: "font-rajdhani font-semibold text-2xl text-white mb-3 mt-8",
   input:
     "bg-siteDimBlack text-white outline-none focus:outline-siteViolet p-4 rounded-md sm:max-w-[50%] max-w-full",
 
