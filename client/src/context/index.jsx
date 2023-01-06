@@ -14,6 +14,7 @@ import { ethers } from "ethers";
 
 import Web3Modal from "web3modal";
 import { useNavigate } from "react-router-dom";
+import { createEventListeners } from "./createEventListeners";
 
 const GlobalContext = createContext();
 
@@ -26,8 +27,14 @@ export const GlobalContextProvider = ({ children }) => {
     type: "info",
     message: "",
   });
+  const [battleName, setBattleName] = useState("");
+  const [gameData, setGameData] = useState({
+    players: [],
+    pendingBattles: [],
+    activeBattle: null,
+  });
 
-  console.log(contract);
+  const navigate = useNavigate();
 
   //* Set the wallet address to the state
   const updateCurrentWalletAddress = async () => {
@@ -39,8 +46,8 @@ export const GlobalContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    // updateCurrentWalletAddress();
-
+    updateCurrentWalletAddress();
+    console.log(gameData)
     window?.ethereum?.on("accountsChanged", updateCurrentWalletAddress);
   }, []);
 
@@ -65,6 +72,18 @@ export const GlobalContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    if (contract) {
+      createEventListeners({
+        navigate,
+        contract,
+        provider,
+        walletAddress,
+        setShowAllert,
+      });
+    }
+  }, [contract]);
+
+  useEffect(() => {
     if (showAllert?.status) {
       const timer = setTimeout(() => {
         setShowAllert({
@@ -77,6 +96,37 @@ export const GlobalContextProvider = ({ children }) => {
     }
   }, [showAllert]);
 
+  // Set the game data to the state
+  useEffect(() => {
+    const fetchGameDate = async () => {
+      const fetchBattles = await contract.getAllBattles();
+      const pendingBattles = fetchBattles.filter(
+        (battle) => battle.battleStatus === 0
+      );
+
+      let activeBattle = null;
+
+      fetchBattles.forEach((battle) => {
+        if (
+          battle.players.find(
+            (player) => player.toLowerCase() === walletAddress.toLowerCase()
+          )
+        ) {
+          if (battle.winner.startsWith("0x00")) {
+            activeBattle = battle;
+          }
+        }
+      });
+
+      setGameData({
+        pendingBattles: pendingBattles.slice(1),
+        activeBattle,
+      });
+    };
+
+    if (contract) fetchGameDate();
+  }, [contract]);
+
   return (
     <GlobalContext.Provider
       value={{
@@ -84,7 +134,10 @@ export const GlobalContextProvider = ({ children }) => {
         walletAddress,
         showAllert,
         setShowAllert,
-        updateCurrentWalletAddress
+        updateCurrentWalletAddress,
+        battleName,
+        setBattleName,
+        gameData,
       }}
     >
       {children}

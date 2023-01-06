@@ -18,7 +18,7 @@ const styles = {
   // join battle page
   joinHeadText: "font-rajdhani font-semibold text-2xl text-white mb-3",
   joinContainer: "flex flex-col gap-3 mt-3 mb-5",
-  joinBattleTitle: "font-rajdhani font-normal text-xl text-white",
+  joinBattleTitle: "font-rajdhani font-normal text-xl text-white mt-6",
   joinLoading: "font-rajdhani font-normal text-xl text-white",
 
   // battleground page

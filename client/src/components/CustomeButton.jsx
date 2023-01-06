@@ -5,7 +5,7 @@ const CustomeButton = ({ title, handleClick, restStyles }) => {
   return (
     <button
       type="button"
-      className={`${styles.btn} ${restStyles}`}
+      className={`${styles.btn} ${restStyles}  `}
       onClick={handleClick}
     >
       {title }
