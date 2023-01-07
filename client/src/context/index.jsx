@@ -33,6 +33,7 @@ export const GlobalContextProvider = ({ children }) => {
     pendingBattles: [],
     activeBattle: null,
   });
+  const [updataGamedata, setUpdataGamedata] = useState(0);
 
   const navigate = useNavigate();
 
@@ -46,8 +47,8 @@ export const GlobalContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    updateCurrentWalletAddress();
-    console.log(gameData)
+    // updateCurrentWalletAddress();
+    console.log(gameData);
     window?.ethereum?.on("accountsChanged", updateCurrentWalletAddress);
   }, []);
 
@@ -68,7 +69,7 @@ export const GlobalContextProvider = ({ children }) => {
       );
     };
 
-    setSmartContractAndProvider();
+    // setSmartContractAndProvider();
   }, []);
 
   useEffect(() => {
@@ -79,6 +80,7 @@ export const GlobalContextProvider = ({ children }) => {
         provider,
         walletAddress,
         setShowAllert,
+        setUpdataGamedata,
       });
     }
   }, [contract]);
@@ -125,7 +127,7 @@ export const GlobalContextProvider = ({ children }) => {
     };
 
     if (contract) fetchGameDate();
-  }, [contract]);
+  }, [contract, updataGamedata]);
 
   return (
     <GlobalContext.Provider
